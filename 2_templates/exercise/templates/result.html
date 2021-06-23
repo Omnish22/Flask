@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block contain %}
+
+<div class="jumbotron bg-secondary text-light">
+    <p>Lets see how you performed!</p>
+    {% if length==0 %}
+        <p>Your username passed the three requirements</p>
+    {% endif %}
+    {% if length>0 %}
+        <ul>
+            {% for element in failed %}
+            <li>{{element}}</li>
+            {% endfor %}        
+        </ul>
+    {% endif %}
+</div>
+
+{% endblock %}

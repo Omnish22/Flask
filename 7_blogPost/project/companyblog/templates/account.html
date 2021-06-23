@@ -1,0 +1,43 @@
+<!-- companyblog/templates/account.html -->
+
+{% extends "base.html" %}
+{% block content %}
+
+<div class="w-50 text-center container" style="background-color:#e7e7de;">
+    <div>
+        <br>
+        <h1>Welcome to the page for {{current_user.username}}</h1>
+        <img align="center" src="{{url_for('static',filename='profile_pics/'+current_user.profile_image)}}">
+        <br>
+    </div>
+    
+    <div class='container'>
+        <form method="POST" action="" enctype="multipart/form-data">
+            <br>
+            {{form.hidden_tag()}}
+            <div class='form-group'>
+                {{form.username.label(class='form-group')}}
+                {{form.username}}
+            </div>
+            <br>
+            <div class='form-group'>
+                {{form.email.label(class='form-group')}}{{form.email}}
+            </div>
+            <br>
+            <div class='form-group'>
+                {{form.picture.label(class='form-group')}}
+                {{form.picture}}
+            </div>
+            <br>
+            <div class='form-group'>
+                {{form.submit(class='btn btn-primary')}}
+            </div>
+            <br>
+        </form>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

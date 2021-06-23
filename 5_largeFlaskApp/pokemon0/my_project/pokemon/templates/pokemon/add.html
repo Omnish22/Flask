@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block contents%}
+
+<div class='container-fluid bg-light'>
+    <br>
+    <h3>Add the Pokemon Name and it's type in the form</h3>
+    <form method="POST" >
+        {{form.hidden_tag()}}
+        {{form.name.label}}{{form.name()}}
+        {{form.type()}}
+        {{form.submit}}
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class='bg-light'>
+    <h1>You can Add Puppy in list</h1>
+    <p>Please fill out form to Add Puppy</p>
+    <form method='POST'>
+        {{form.hidden_tag()}}
+        {{form.name.label}} {{form.name()}}
+        {{form.breed.label}} {{form.breed()}}
+        {{form.submit()}}
+    </form>
+</div>
+
+
+{% endblock %}

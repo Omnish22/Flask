@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class='container-fluid expand-lg'>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.name.label}}{{form.name()}}
+        {{form.type.label}}{{form.type()}}
+        {{form.submit}}
+    </form>
+</div>
+
+
+{% endblock %}

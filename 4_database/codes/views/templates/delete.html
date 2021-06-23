@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<div class='bg-light'>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.id.label}}{{form.id()}} 
+        {{form.submit}}
+    </form>
+</div>
+{% endblock %}

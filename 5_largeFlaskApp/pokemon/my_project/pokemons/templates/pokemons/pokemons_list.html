@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class='container-fluid extend-lg'>
+    <br>
+    <h3>Enter Pokemon ID to remove pokemon from list:</h3>
+    {% for pokemon in pokemons %}
+
+    {{pokemon.id}}) &nbsp; {{pokemon}} <br>
+
+
+    {% endfor%}
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class='container-fluid extend-lg'>
+    <br>
+    <h3>Enter Pokemon ID to remove pokemon from list:</h3>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.id.label}}{{form.id()}}
+        {{form.submit()}}
+    </form>
+</div>
+
+
+{% endblock %}

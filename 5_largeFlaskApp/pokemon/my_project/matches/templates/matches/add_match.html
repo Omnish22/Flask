@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block contents %}
+
+
+
+<div class='container-fluid extend-lg'>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.trainer1.label}}{{form.trainer1()}}
+        {{form.pokemon1.label}}{{form.pokemon1()}}
+        <br>
+        {{form.trainer2.label}}{{form.trainer2()}}
+        {{form.pokemon2.label}}{{form.pokemon2()}}
+        <br>
+        {{form.submit}}
+        
+    </form>
+</div>
+
+
+{% endblock %}
+<!-- <div class='container-fluid extend-lg'>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        {{form.trainer1_id.label}}{{form.trainer1_id()}}
+        {{form.pokemon1_id.label}}{{form.pokemon1_id()}}
+        <br>
+        {{form.trainer2_id.label}}{{form.trainer2_id()}}
+        {{form.pokemon2_id.label}}{{form.pokemon2_id()}}
+        <br>
+        {{form.submit}}
+
+    </form>
+</div> -->

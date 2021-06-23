@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class='bg-light content container-fluid'>
+    <br><h1>List of all Puppies</h1><br>
+    <strong> &nbsp; ID &nbsp; &nbsp; Details</strong>
+    {% for puppy in puppies %}
+    <p> &nbsp; ({{puppy.id}}) &nbsp; &nbsp; {{puppy}}</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

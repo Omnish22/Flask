@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+<div class='bg-light'>
+    <br><h3>Enter Details which Puppy you want Owned</h3><br>
+    <form method='POST'>
+        {{form.hidden_tag()}}
+        {{form.name.label}}{{form.name()}}
+        {{form.puppy_id.label}} {{form.puppy_id()}}
+        {{form.submit()}}
+    </form>
+</div>
+
+{% endblock %}
