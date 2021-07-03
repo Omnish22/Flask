@@ -1,4 +1,9 @@
+from models.menu import Menu
 from models.post import Post 
+from database import Database
+from models.blog import Blog
 
-post1 = Post(1,1,"Post1 Title","Post1 content","Post1 author","Jul 3")
-post2 = Post(1,1,"Post2 Title","Post2 content","Post2 author","Jul 3")
+Database.initilize()
+
+menu = Menu()
+menu.run_menu()
