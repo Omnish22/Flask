@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Create New Post</h2>
+    <form id="new-post" action="/posts/new" method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" aria-describedby="emailHelp" name="title">
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <input type="text-area" class="form-control" id="content" name="content">
+          </div>
+          <div class="button-submit">
+              <button type="submit" class="btn btn-success">Publish</button>
+          </div>
+    </form>
+</div>
+
+
+
+{% endblock %}

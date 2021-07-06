@@ -1,0 +1,16 @@
+#login-form{
+    margin:25px;
+}
+
+.form-container{
+    max-width: 50%;
+    /* line-height: 3rem; */
+}
+
+label{
+    margin: 20px 0 2px 0;
+}
+
+.button-submit{
+    margin-top: 20px;
+}
