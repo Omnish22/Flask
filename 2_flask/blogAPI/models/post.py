@@ -3,12 +3,12 @@ import uuid
 import datetime
 
 class Post():
-    def __init__(self,blog_id,title,content,author,date=datetime.datetime.utcnow(),_id=None):
+    def __init__(self,blog_id,title,content,author,date=None,_id=None):
         self.blog_id = blog_id 
         self.title = title 
         self.content = content 
         self.author = author 
-        self.date = date 
+        self.date = datetime.datetime.utcnow() if date is None else date 
         self._id = uuid.uuid4().hex if _id is None else _id 
 
     def json(self):

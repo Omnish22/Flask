@@ -4,13 +4,13 @@ from datetime import datetime
 import uuid 
 
 class Blog():
-    def __init__(self,title,description,author,author_id):
+    def __init__(self,title,description,author,author_id,date=None,_id=None):
         self.title = title 
         self.description = description
         self.author = author 
-        self.author_id = author_id
-        self.date = datetime.utcnow()
-        self._id = uuid.uuid4().hex 
+        self.author_id = author_id # User ID
+        self.date = datetime.utcnow() if date is None else date
+        self._id = uuid.uuid4().hex if _id is None else _id  # Blog ID
 
 
     def json(self):
@@ -31,11 +31,11 @@ class Blog():
     @classmethod
     def getBlog(cls,blogID):
         ''' This will get the Blog Object '''
-        print("blog Id: ",blogID)
+
         blog_data = Database.get_one(collection="blogs",query={"_id":blogID})
         print("blog_data; ",blog_data)
-        return cls(title=blog_data["title"],description=blog_data["description"],author=blog_data["author"],_id=blog_data["_id"])
-        # return cls(**blog_data)
+        # return cls(title=blog_data["title"],description=blog_data["description"],author=blog_data["author"],author_id=blog_data["author_id"],_id=blog_data["_id"])
+        return cls(**blog_data)
 
     def getAuthor(self):
         return self.author
@@ -49,7 +49,7 @@ class Blog():
     @classmethod
     def getBlogsAuthorID(cls,authorID):
         blogs = Database.get(collection="blogs",query={"author_id":authorID})
-        return [cls(title=blog["title"],description=blog["description"],author=blog["author"],author_id=blog['author_id']) for blog in blogs]
+        return [cls(title=blog["title"],description=blog["description"],author=blog["author"],author_id=blog['author_id'],_id=blog['_id']) for blog in blogs]
         # return [cls(**blog) for blog in blogs]
 
     @classmethod

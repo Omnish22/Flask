@@ -4,7 +4,7 @@
 
 <div class="container">
     <h2>Create New Post</h2>
-    <form id="new-post" action="/posts/new" method="POST">
+    <form id="new-post" action="/posts/new/{{ blog_id }}" method="POST">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text" class="form-control" id="title" aria-describedby="emailHelp" name="title">

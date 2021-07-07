@@ -53,10 +53,14 @@ def register_user():
 @app.route("/blogs/<string:user_id>")
 @app.route("/blogs")
 def user_blogs(user_id=None):
+    user_id = User.get_by_email(session['email'])._id
+    print("User ID: ",user_id)
+    print("User Email: ",session["email"])
     if user_id is not None:
         user = User.get_by_id(user_id)
     else:
         user = User.get_by_email(session['email'])
+    print("New User: ",user)
     blogs = user.get_blogs()
 
     return render_template("user_blogs.html",blogs=blogs,email=user.email)
@@ -78,9 +82,11 @@ def create_new_blog():
 
 @app.route('/posts/<string:blog_id>')
 def blog_posts(blog_id):
+    print("Blog_id: ",blog_id)
+    print("user: ",session['email'])
     blog = Blog.getBlog(blogID=blog_id)
     posts = Blog.getblogPost(blog._id)
-    return render_template('posts.html',posts=posts,blog_title=blog.title,blog_id = blog._id)
+    return render_template('post.html',posts=posts,blog_title=blog.title,blog_id = blog._id)
 
 @app.route('/posts/new/<string:blog_id>',methods=['POST','GET'])
 def create_new_post(blog_id):
