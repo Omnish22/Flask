@@ -1,7 +1,7 @@
 from flask.helpers import make_response
 from database import Database
 from models.blog import Blog
-from flask import Flask , render_template, redirect, request, session
+from flask import Flask , render_template, request, session
 from models.user import  User
 from models.post import Post
 

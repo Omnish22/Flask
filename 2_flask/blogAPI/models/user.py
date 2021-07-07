@@ -21,7 +21,7 @@ class User():
     @classmethod
     def get_by_id(cls,id):
         data = Database.get_one(collection="users",query={"_id":id})
-        # print("user id: ",id)
+        # print("user id: ",id) 
         # print("get_by_id from user: ",data)
         if data is not None:
             return cls(**data)
