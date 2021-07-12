@@ -1,7 +1,8 @@
-from typing_extensions import ParamSpec
+# from typing_extensions import ParamSpec
 from database import Database 
 import uuid
 from flask import session
+from models.blog import Blog
 
 class User():
     def __init__(self,email,password,_id=None):
@@ -17,7 +18,7 @@ class User():
         }
 
     def createUser(self):
-        Database.add(collection='Users',data=self.json())
+        Database.add(collection='users',data=self.json())
 
 
     @classmethod
@@ -63,3 +64,19 @@ class User():
     def logout():
         ''' To logout user it will remove user from session '''
         session['email']= None
+
+
+    def getBlogs(self):
+        ''' Using Author ID it will return all Blogs related to it '''
+        return Blog.getBlogAuthorID(self._id)
+
+    def newBlog(self,title,description):
+        ''' Let user to create new Blog '''
+        blog = Blog(title=title,description=description,author=self.email,author_id=self._id)
+        blog.createBlog()
+
+    @staticmethod
+    def newPost(blogID,title,content):
+        blog = Blog.getBlog(blogID=blogID)
+        blog.newBlogPost(title=title,content=content)
+

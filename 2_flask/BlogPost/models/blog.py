@@ -70,8 +70,8 @@ class Blog():
     
     def newBlogPost(self,title,content):
         ''' This will create new Post and save it in database '''
-        author = Blog.getBlog(blog_id = self._id).author
-        new_post = Post(title=title,content=content,blog_id=self._id,author=author)
+        blog = Blog.getBlog(blogID = self._id)
+        new_post = Post(title=title,content=content,blog_id=self._id)
         new_post.createPost()
 
     @classmethod
