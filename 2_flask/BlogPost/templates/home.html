@@ -2,9 +2,25 @@
 
 {% block content %}
 
-    <div class="container bg-secondary all-blogs">
+    <div class="container bg-secondary home-heading">
         <h1>Recent Blogs</h1>
+        
     </div>
 
+    {% if nblogs != 0 %}
+        {% for blog in blogs %}
+            <div class="container blogs-list">
+                <h3>{{ blog.title }}</h2>
+                <h5>{{ blog.description }}</h5>
+                Created On : {{ blog.date.date() }} <br>
+                At : {{blog.date.time().hour }}:{{ blog.date.time().minute }}<br>
+                By : {{ blog.author }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="container blogs-list">
+            <h3 class="error">Sorry!!...No Recent Blogs!!</h3>
+        </div>
+    {% endif %}
 
 {% endblock %}
