@@ -63,7 +63,8 @@ class User():
     @staticmethod
     def logout():
         ''' To logout user it will remove user from session '''
-        session['email']= None
+        print("LOGOUT")
+        session.pop('email', None)
 
 
     def getBlogs(self):
@@ -74,6 +75,11 @@ class User():
         ''' Let user to create new Blog '''
         blog = Blog(title=title,description=description,author=self.email,author_id=self._id)
         blog.createBlog()
+
+    def blogTitles(self):
+        ''' Gives all titles of particular User blogs '''
+        blogs = Blog.getAllBlogAuthorID(authorID=self._id)
+        return [blog.title for blog in blogs]
 
     @staticmethod
     def newPost(blogID,title,content):

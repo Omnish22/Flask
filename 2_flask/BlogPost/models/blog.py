@@ -29,7 +29,7 @@ class Blog():
 
     @classmethod
     def getBlog(cls,blogID):
-        ''' This will give the Blog using Blog ID'''
+        ''' This will give the One Blog using Blog ID'''
         blog = Database.getOne(collection="blogs",query={"_id":blogID})
         return cls(**blog) 
         # return cls(title=blog['title'],description=blog['description'],author=blog['author'],author_id=blog['author_id'],date=blog['date'],_id=blog['_id'])
@@ -37,11 +37,17 @@ class Blog():
 
     @classmethod
     def getBlogAuthorID(cls,authorID):
-        ''' Give Blog using AuthorID'''
+        ''' Give One Blog using AuthorID'''
         blog = Database.getOne(collection='blogs',query={'author_id':authorID})
         return cls(**blog)
         # return cls(title=blog['title'],description=blog['description'],author=blog['author'],author_id=blog['author_id'],date=blog['date'],_id=blog['_id'])
         
+    @staticmethod
+    def getAllBlogAuthorID(authorID):
+        ''' Give all blogs of particular User '''
+        blogs = Database.getAll(collection='blogs',query={'author_id':authorID})
+        return [Blog(**blog) for blog in blogs]
+
 
     @classmethod
     def getAllBlogs(cls):

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="main-form">
+    <div class="formdiv">
+        <form action="/auth/register" method="POST" class="form">
+            <h3>Sign UP</h3>
+            <div class="form-container">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Emai">
+            </div>
+            <div class="form-container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password">
+            </div>
+            <button type="submit" class="button">Sign UP</button>
+        </form>
+    </div>
+</main>
+
+{% endblock %}
