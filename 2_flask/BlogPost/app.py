@@ -131,9 +131,11 @@ def editBlog(blog_id):
 
 
 @app.route("/post/delete/<string_id:post_id>")
-def postDelete(post_id):
+def postDelete(blog_id,post_id):
     if session:
-        pass 
+        blog = Blog.getBlog(blogID=blog_id)
+        if session['email']==blog.author:
+            pass
 
     return redirect(url_for('login'))
 
