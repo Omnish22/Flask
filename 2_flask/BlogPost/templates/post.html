@@ -27,8 +27,8 @@
                 <h5>{{ post.content }}</h5>
                 Created On : {{ post.date.date() }} <br>
                 At : {{post.date.time().hour }}:{{ post.date.time().minute }}<br>
-                <a href=""><button class="change edit">Edit</button></a>
-                <a href=""><button class="change delete">Delete</button></a>
+                <a href="/post/edit/{{blog._id}},{{post._id}}"><button class="change edit">Edit</button></a>
+                <a href="/post/delete/{{blog._id}},{{post._id}}"><button class="change delete">Delete</button></a>
             </div>
         </div>
     {% endfor %}

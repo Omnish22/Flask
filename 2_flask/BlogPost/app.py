@@ -3,6 +3,7 @@ from werkzeug.utils import redirect
 from database import Database
 from models.blog import Blog
 from models.users import User
+from models.post import Post
 from flask.helpers import make_response
 
 Database.initialize()
@@ -130,19 +131,36 @@ def editBlog(blog_id):
 
 
 
-@app.route("/post/delete/<string_id:post_id>")
+@app.route("/post/delete/<string:blog_id>,<string:post_id>")
 def postDelete(blog_id,post_id):
     if session:
         blog = Blog.getBlog(blogID=blog_id)
         if session['email']==blog.author:
-            pass
-
+            Post.deletePost(postID=post_id)
+            return redirect(url_for("post",blog_id=blog_id))
     return redirect(url_for('login'))
 
 
 
 
+@app.route("/post/edit/<string:blog_id>,<string:post_id>",methods=['GET','POST'])
+def postEdit(blog_id,post_id):
+    if session:
+        blog = Blog.getBlog(blogID=blog_id)
+        post = Post.getPostById(postID=post_id)
+        print("post: ",post.title)
+        if session['email'] == blog.author:
+            if request.method=='GET':
+                return render_template("editPost.html",blog=blog,post=post)
+            elif request.method=='POST':
+                updateTitle=request.form['title']
+                updateContent=request.form['content']
+                Post.updatePostTitle(postID=post_id,updatedTitle=updateTitle)
+                Post.updatePostContent(postID=post_id,updateContent=updateContent)
+                return redirect(url_for("post",blog_id=blog_id))
 
+
+    return redirect(url_for("login"))
 
 
 
