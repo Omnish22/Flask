@@ -1,4 +1,5 @@
-from flask import Flask, render_template, session,request, redirect
+from flask import Flask, render_template, session,request,url_for
+from werkzeug.utils import redirect
 from database import Database
 from models.blog import Blog
 from models.users import User
@@ -15,6 +16,7 @@ app.secret_key = "screate key"
 def home():
     # print("session: ",session)
     blogs = [Blog.getAllBlogs()[len(Blog.getAllBlogs())-1-i] for i in range(len(Blog.getAllBlogs()))]
+    # print("blogs: ",[blog.title for blog in blogs])
     return render_template("home.html",session=session,blogs = blogs,nblogs=len(blogs))
 
 @app.route("/login")
@@ -27,10 +29,10 @@ def loginUser():
     password = request.form['password']
     if User.login_valid(Eamil=email,Password=password):
         User.login(userEmail=email)
-        return home()
+        return redirect(url_for("home"))
     else:
         session['email'] = None
-        return register()
+        return redirect(url_for("register"))
 
 
 @app.route("/register")
@@ -44,9 +46,9 @@ def registerUser():
     password = request.form['password']
     register_value = User.register(Email=email,Password=password)
     if register_value:
-        return home()
+        return redirect(url_for("home"))
     else:
-        return login()
+        return redirect(url_for("login"))
 
 
 @app.route("/logout")
@@ -67,24 +69,73 @@ def createBlog():
             user = User.getByEmail(Email=session['email'])
             if title not in user.blogTitles():
                 user.newBlog(title=title,description=description)
-            return make_response(home())
+            return redirect(url_for('home'))
+            
     else:
         return login()
 
-@app.route("/posts")
-def posts():
-    pass
+
+
+@app.route("/post/<string:blog_id>")
+def post(blog_id):
+    blog = Blog.getBlog(blogID=blog_id)
+    posts = Blog.getBlogPost(blogID=blog_id)
+    posts = [posts[len(posts)-1-i] for i in range(len(posts))]
+    return render_template("post.html",posts=posts,blog=blog,blogTitle = blog.title,blogID=blog_id,nposts=len(posts),session=session)
+
+
+@app.route("/post/new/<string:blog_id>",methods=['GET','POST'])
+def createPost(blog_id):
+    blog = Blog.getBlog(blogID=blog_id)
+    if session['email']==blog.author:
+        if request.method=="GET":
+            return render_template("createPost.html",blog_id=blog_id)
+        elif request.method=="POST":
+            title = request.form['title']
+            content = request.form['content']
+            user = User.getByEmail(Email=session['email'])
+            if title not in Blog.postTitles(blog_id):
+                user.newPost(blogID=blog_id,title=title,content=content)
+            return redirect(url_for("post",blog_id=blog_id))
+    else:
+        return login()
+
+@app.route("/blog/delete/<string:blog_id>")
+def deleteBlog(blog_id):
+    print("run!")
+    if session:
+        blog = Blog.getBlog(blogID=blog_id)
+        if session['email']==blog.author:
+            Blog.deleteBlog(blogID=blog_id)
+            print("Delete Pressed")
+            return redirect(url_for("home"))
+    return redirect(url_for("login"))
+
+
+@app.route("/blog/edit/<string:blog_id>",methods=['GET','POST'])
+def editBlog(blog_id):
+    if session:
+        blog = Blog.getBlog(blogID=blog_id)
+        if session['email']==blog.author:
+            if request.method=="GET":
+                return render_template("editBlog.html",blog=blog)
+            elif request.method=="POST":
+                updateTitle = request.form['title']
+                updateDescription = request.form['description']
+                print("title: ",updateTitle)
+                Blog.updateBlogTitle(blogID=blog_id,updateTitle=updateTitle)
+                Blog.updateBlogDescription(blogID=blog_id,updateDescription=updateDescription)
+                return redirect(url_for("home"))
+    return redirect(url_for("login"))
 
 
 
+@app.route("/post/delete/<string_id:post_id>")
+def postDelete(post_id):
+    if session:
+        pass 
 
-
-
-
-
-
-
-
+    return redirect(url_for('login'))
 
 
 

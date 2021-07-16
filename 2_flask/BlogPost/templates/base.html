@@ -25,12 +25,12 @@
           <div class="collapse navbar-collapse" id="navbarcollapse">
             <ul class="navbar-nav justify-content-around w-100">
                 <li><a href="{{ url_for('home') }}" class="nav-link">Home</a></li>
-                <li><a href="{{ url_for('register') }}" class="nav-link">Register</a></li>
                 {% if session %}
                 <li><a href="{{ url_for('createBlog') }}" class="nav-link">Create Blogs</a></li>
                 <li><a href="#" class="nav-link">Profile</a></li>
                 <li><a href="{{ url_for('logout') }}" class="nav-link">Log Out</a></li>
                 {% else %}
+                <li><a href="{{ url_for('register') }}" class="nav-link">Register</a></li>
                 <li><a href="{{ url_for('login') }}" class="nav-link">Log In</a></li>
                 {% endif %}              
               </ul>
@@ -39,6 +39,12 @@
 
         </div>
       </nav>
+
+      {% if session %}
+        <div class="container current-user">
+          <p>{{ session['email'] }}</p>   
+        </div>
+      {% endif %}
 
 
     {% block content %}

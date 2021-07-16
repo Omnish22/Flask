@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<main class="main-form">
+    <div class="formdiv">
+        <form action="/blog/edit/{{ blog._id }}" class='form' method="POST">
+            <h3>Edit Blog</h3>
+            <div class="form-container">
+                <label for="Title">Title</label>
+                <input type="text" value="{{ blog.title }}" name="title">
+            </div>
+            <div class="form-container">
+                <label for="description">Description</label>
+                <input type="text-area" id="description" value="{{ blog.description }}" name="description">
+            </div>
+            <button type="submit" class="button">Update Blog</button>
+
+        </form>
+
+    </div>
+</main>
+
+
+
+{% endblock %}

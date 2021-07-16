@@ -53,6 +53,7 @@ class Blog():
     def getAllBlogs(cls):
         ''' Give all Created Blogs '''
         blogs = Database.getAll(collection='blogs',query={})
+        # print("blogs:",blogs)
         return [cls(**blog) for blog in blogs]
 
 
@@ -84,3 +85,8 @@ class Blog():
     def getBlogPost(cls,blogID):
         ''' This will get give all Posts related to that Blog '''
         return Post.getPostsByBlog(blogID=blogID)
+
+    @staticmethod
+    def postTitles(blogID):
+        posts = Blog.getBlogPost(blogID=blogID)
+        return [post['title'] for post in posts]

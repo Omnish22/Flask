@@ -57,3 +57,9 @@ class Post():
     def deleteAllPost(blogID):
         ''' This will delete all the Post related to particular Blog'''
         Database.delete(collection='posts',query={})
+
+
+    @staticmethod
+    def postTitles(blogID):
+        posts = Post.getPostsByBlog(blogID=blogID)
+        return [post.title for post in posts]
