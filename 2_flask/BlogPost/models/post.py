@@ -36,7 +36,11 @@ class Post():
         ''' Using postID it will fetch Post '''
         post = Database.getOne(collection='posts',query={"_id":postID})
         # return cls(title= post['title'],content=post['content'],blog_id=post["blog_id"],date=post['date'],_id=post["_id"])
-        return cls(**post)
+        if post is not None:
+            return cls(**post)
+        return None
+
+
 
     @staticmethod
     def updatePostTitle(postID,updatedTitle):
@@ -59,7 +63,3 @@ class Post():
         Database.delete(collection='posts',query={})
 
 
-    @staticmethod
-    def postTitles(blogID):
-        posts = Post.getPostsByBlog(blogID=blogID)
-        return [post.title for post in posts]

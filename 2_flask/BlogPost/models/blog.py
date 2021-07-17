@@ -31,7 +31,10 @@ class Blog():
     def getBlog(cls,blogID):
         ''' This will give the One Blog using Blog ID'''
         blog = Database.getOne(collection="blogs",query={"_id":blogID})
-        return cls(**blog) 
+
+        if  blog is not None:
+            return cls(**blog)
+        return None  
         # return cls(title=blog['title'],description=blog['description'],author=blog['author'],author_id=blog['author_id'],date=blog['date'],_id=blog['_id'])
 
 

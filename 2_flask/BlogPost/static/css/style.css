@@ -47,6 +47,9 @@ div.blogs-list .error{
     justify-content:space-between;    
 
 }
+#footer li{
+    margin:0 10px;
+}
 
 
 .main-form{
@@ -146,4 +149,19 @@ div.blogs-list .error{
     justify-content: flex-end;
     padding-right: 10px;
     margin-top: 5px;
+}
+
+
+.profile-container.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    background-color: #DDDDDD;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.profile-container h3{
+    color: #00917C;
 }

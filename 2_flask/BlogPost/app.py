@@ -20,6 +20,26 @@ def home():
     # print("blogs: ",[blog.title for blog in blogs])
     return render_template("home.html",session=session,blogs = blogs,nblogs=len(blogs))
 
+
+
+@app.route("/profile")
+def profile():
+    if session:
+        user = User.getByEmail(Email=session['email'])
+        blogs = Blog.getAllBlogAuthorID(authorID=user._id)        
+        return render_template("profile.html",blogs=blogs,nblogs=len(blogs))
+    return redirect(url_for('login'))
+
+
+@app.route("/profile/<string:user_id>")
+def othersProfile(user_id):
+    if session:
+        user = User.getById(userID=user_id)
+        blogs = Blog.getAllBlogAuthorID(authorID=user_id)
+        return render_template("othersProfile.html",blogs = blogs,user=user,nblogs=len(blogs))
+    return redirect(url_for('login'))
+
+
 @app.route("/login")
 def login():
     return render_template("login.html")
@@ -32,7 +52,6 @@ def loginUser():
         User.login(userEmail=email)
         return redirect(url_for("home"))
     else:
-        session['email'] = None
         return redirect(url_for("register"))
 
 
@@ -45,11 +64,13 @@ def register():
 def registerUser():
     email=request.form['email']
     password = request.form['password']
-    register_value = User.register(Email=email,Password=password)
-    if register_value:
-        return redirect(url_for("home"))
-    else:
-        return redirect(url_for("login"))
+    if (email!="") and (password!=""):  # so that user cant login as empty
+        register_value = User.register(Email=email,Password=password)
+        if register_value:
+            return redirect(url_for("home"))
+        else:
+            return redirect(url_for("login"))
+    return redirect(url_for("register"))
 
 
 @app.route("/logout")
@@ -106,27 +127,32 @@ def deleteBlog(blog_id):
     print("run!")
     if session:
         blog = Blog.getBlog(blogID=blog_id)
-        if session['email']==blog.author:
-            Blog.deleteBlog(blogID=blog_id)
-            print("Delete Pressed")
-            return redirect(url_for("home"))
+        if blog is not None:
+            if session['email']==blog.author:
+                Blog.deleteBlog(blogID=blog_id)
+                print("Delete Pressed")
+                return redirect(url_for("home"))
+            
     return redirect(url_for("login"))
 
 
 @app.route("/blog/edit/<string:blog_id>",methods=['GET','POST'])
 def editBlog(blog_id):
-    if session:
+    if session:  # only if you login u can edit blogs
         blog = Blog.getBlog(blogID=blog_id)
-        if session['email']==blog.author:
-            if request.method=="GET":
-                return render_template("editBlog.html",blog=blog)
-            elif request.method=="POST":
-                updateTitle = request.form['title']
-                updateDescription = request.form['description']
-                print("title: ",updateTitle)
-                Blog.updateBlogTitle(blogID=blog_id,updateTitle=updateTitle)
-                Blog.updateBlogDescription(blogID=blog_id,updateDescription=updateDescription)
-                return redirect(url_for("home"))
+        if blog is not None:  # if u edit then delete blog and press back 2 times it should not open edit page bcs blog is not there so no meaning to edit it 
+            if session['email']==blog.author:  # to allow edit those blogs which belongs to login users
+                if request.method=="GET":
+                        return render_template("editBlog.html",blog=blog)
+                    # return redirect(url_for("home"))
+                elif request.method=="POST":
+                    updateTitle = request.form['title']
+                    updateDescription = request.form['description']
+                    print("title: ",updateTitle)
+                    Blog.updateBlogTitle(blogID=blog_id,updateTitle=updateTitle)
+                    Blog.updateBlogDescription(blogID=blog_id,updateDescription=updateDescription)
+                    return redirect(url_for("home"))
+        # return redirect(url_for("login"))
     return redirect(url_for("login"))
 
 
@@ -147,11 +173,12 @@ def postDelete(blog_id,post_id):
 def postEdit(blog_id,post_id):
     if session:
         blog = Blog.getBlog(blogID=blog_id)
-        post = Post.getPostById(postID=post_id)
-        print("post: ",post.title)
         if session['email'] == blog.author:
             if request.method=='GET':
-                return render_template("editPost.html",blog=blog,post=post)
+                if Post.getPostById(postID=post_id) is not None:
+                    post = Post.getPostById(postID=post_id)
+                    return render_template("editPost.html",blog=blog,post=post)
+                return redirect(url_for("post",blog_id = blog_id))
             elif request.method=='POST':
                 updateTitle=request.form['title']
                 updateContent=request.form['content']

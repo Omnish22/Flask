@@ -27,7 +27,7 @@
                 <li><a href="{{ url_for('home') }}" class="nav-link">Home</a></li>
                 {% if session %}
                 <li><a href="{{ url_for('createBlog') }}" class="nav-link">Create Blogs</a></li>
-                <li><a href="#" class="nav-link">Profile</a></li>
+                <li><a href="{{url_for('profile')}}" class="nav-link">Profile</a></li>
                 <li><a href="{{ url_for('logout') }}" class="nav-link">Log Out</a></li>
                 {% else %}
                 <li><a href="{{ url_for('register') }}" class="nav-link">Register</a></li>
