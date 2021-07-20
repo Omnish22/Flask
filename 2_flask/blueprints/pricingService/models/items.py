@@ -1,22 +1,24 @@
+import collections
+from pymongo import collection
 import requests 
 from bs4 import BeautifulSoup
 import re 
 from typing import Dict
 import uuid 
-
+from common.database import Database
 
 class Item:
-    def __init__(self,url:str,tag_name: str,query:Dict,name:str="Item",_id:str=None):
+    def __init__(self, url:str, tag_name: str, query:Dict, name:str="Item", _id:str=None):
         self.name = name
         self.url = url 
         self.tag_name = tag_name 
         self.query = query 
         self.price = None
         self.collection = 'items'
-        self._id = uuid.uuid4.hex if _id is None else _id
+        self._id = uuid.uuid4().hex if _id is None else _id
 
     def __repr__(self):
-        return f"Item: {self.url}"
+        return f"Item: {self.name}"
 
     def json(self)-> Dict:
         return {
@@ -24,8 +26,6 @@ class Item:
             "url":self.url,
             "tag_name":self.tag_name,
             "query":self.query,
-            "price":self.price,
-            "collection":self.collection,
             "_id":self._id
         }
 
@@ -42,3 +42,12 @@ class Item:
         without_commas = found_price.replace(",","")
         self.price = float(without_commas)
         return self.price
+
+    def add(self):
+        Database.insert(collection=self.collection,data=self.json())
+
+    @classmethod
+    def getAll(cls):
+        ''' this return class object for every item in database '''
+        items_cursor = Database.find(collection='items',query={})
+        return [cls(**item) for item in items_cursor]
