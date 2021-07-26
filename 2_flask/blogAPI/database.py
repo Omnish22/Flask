@@ -1,6 +1,8 @@
 import pymongo 
 
 
+
+
 class Database():
     uri = "mongodb://127.0.0.1:27017"
     DATABASE = None 

@@ -1,20 +1,20 @@
-import collections
-from pymongo import collection
 import requests 
 from bs4 import BeautifulSoup
 import re 
-from typing import Dict
+from typing import  Dict
 import uuid 
-from common.database import Database
+from models.model import Model
+# from common.database import Database
 
-class Item:
+class Item(Model):
+    collection = "items"
     def __init__(self, url:str, tag_name: str, query:Dict, name:str="Item", _id:str=None):
+        super().__init__()
         self.name = name
         self.url = url 
         self.tag_name = tag_name 
         self.query = query 
         self.price = None
-        self.collection = 'items'
         self._id = uuid.uuid4().hex if _id is None else _id
 
     def __repr__(self):
@@ -43,11 +43,16 @@ class Item:
         self.price = float(without_commas)
         return self.price
 
-    def add(self):
-        Database.insert(collection=self.collection,data=self.json())
+    # def add(self):
+    #     Database.insert(collection=self.collection,data=self.json())
 
-    @classmethod
-    def getAll(cls):
-        ''' this return class object for every item in database '''
-        items_cursor = Database.find(collection='items',query={})
-        return [cls(**item) for item in items_cursor]
+    # @classmethod
+    # def getAll(cls):
+    #     ''' this return class object for every item in database '''
+    #     items_cursor = Database.find(collection='items',query={})
+    #     return [cls(**item) for item in items_cursor]
+
+    # @classmethod 
+    # def get_by_id(cls,_id:str)->"Item":
+    #     item_json = Database.find_one("items",{"_id":_id})
+    #     return cls(**item_json)

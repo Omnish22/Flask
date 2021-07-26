@@ -1,3 +1,4 @@
+import collections
 import pymongo
 from typing import Dict 
 
@@ -11,7 +12,10 @@ class Database:
         Database.DATABASE[collection].insert(data)
 
     @staticmethod
-    def find(collection:str, query:Dict):
+    def find(collection:str, query:Dict)->pymongo.cursor:
         return Database.DATABASE[collection].find(query)
 
-    
+    @staticmethod
+    def find_one(collection:str, query:Dict):
+        return Database.DATABASE[collection].find_one(query)
+        
