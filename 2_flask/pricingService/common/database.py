@@ -1,4 +1,3 @@
-import collections
 import pymongo
 from typing import Dict 
 
@@ -19,3 +18,12 @@ class Database:
     def find_one(collection:str, query:Dict):
         return Database.DATABASE[collection].find_one(query)
         
+    @staticmethod
+    def update(collection: str, query: Dict, data: Dict)->None:
+        # upsert will create new entry if we get no element
+        Database.DATABASE[collection].update(query,data,upsert=True)
+
+    @staticmethod
+    def remove(collection:str, query:Dict)->Dict:
+        return Database.DATABASE[collection].remove(query)
+
