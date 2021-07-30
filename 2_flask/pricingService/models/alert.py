@@ -37,6 +37,7 @@ class Alert(Model):
 
     def json(self)->Dict:
         return {
+            "name":self.name,
             "item_id":self.item_id,
             "price_limit":self.price_limit,
             "_id":self._id 
