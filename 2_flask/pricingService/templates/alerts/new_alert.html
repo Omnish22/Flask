@@ -1,0 +1,28 @@
+<!--  NO NEED OF ITEMS TAMPLETS BECAUSE WE ARE NOT GONNA LET USER TO DEFINE ITEMS THARE 
+      GOING TO BE CREATED INTERNALLY  -->
+
+
+{% extends "base.html" %}
+{% block content %}
+
+<header><h1>Create Item</h1></header>
+<section class="create-item-form">
+    <form method="POST" action="/alerts/new">
+        <div class="form-group">
+            <label for="itemURL">Item URL</label>
+            <input type="text" class="form-control"id="item URL" name="item_url">
+        </div>
+        
+        <div form="form-group">
+            <label for="price_id">Price Limit</label>
+            <input type="text" class="form-control"  id="price_id" name="price_limit" aria-describedby="queryHelp">
+            <small>
+                Under which price for the item would you like to get modified?
+            </small>
+        </div>
+        <button type="submit"class='btn btn-primary'>Create</button>
+    </form>
+</section>
+
+
+{% endblock %}

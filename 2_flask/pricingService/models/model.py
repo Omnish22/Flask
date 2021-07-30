@@ -1,6 +1,6 @@
 from abc import abstractclassmethod, ABCMeta
 from typing import List, TypeVar, Type # types are for connecting cls with return value of function
-
+from typing import Union,Dict
 from common.database import Database
 
 
@@ -26,7 +26,6 @@ class Model(metaclass=ABCMeta):
         Database.remove(self.collection,{"_id":self._id})
 
 
-
     @abstractclassmethod
     def json(self):
         raise NotImplementedError
@@ -38,13 +37,17 @@ class Model(metaclass=ABCMeta):
 
     @classmethod
     # def get_by_id(cls,_id:str)->"Model": # Item.get_by_id -> Item ; Alert.get_by_id -> Alert
-        # cls and Model are not tie together means if cls got items it will not change Model to Items to do that we need to connect them
+    # cls and Model are not tie together means if cls got items it will not change Model to Items to do that we need to connect them
     def get_by_id(cls: Type[T],_id:str)->T:
-        return cls.find_many_by(attribute="_id",value=_id)
+        return cls.find_one_by("_id",_id)
 
     @classmethod 
-    def find_one_by(cls:Type[T],attribute:str,value:str)->T:
-        return cls(**Database.find_one(cls.collection,{attribute:value}))
+    def find_one_by(cls:Type[T],attribute:str,value:Union[str,Dict])->T:
+        object =Database.find_one(cls.collection,{attribute:value})
+        print("class:",cls)
+        print(f"query:{attribute}:{value}")
+        print("object:",object)
+        return cls(**object)
 
     @classmethod
     def find_many_by(cls:Type[T],attribute:str,value:str)->List[T]:

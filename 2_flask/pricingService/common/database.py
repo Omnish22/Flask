@@ -15,9 +15,11 @@ class Database:
         return Database.DATABASE[collection].find(query)
 
     @staticmethod
-    def find_one(collection:str, query:Dict):
-        return Database.DATABASE[collection].find_one(query)
-        
+    def find_one(collection:str, query:Dict)->Dict:
+        result = Database.DATABASE[collection].find_one(query)
+        # print("result:",list(result))
+        return result 
+
     @staticmethod
     def update(collection: str, query: Dict, data: Dict)->None:
         # upsert will create new entry if we get no element
