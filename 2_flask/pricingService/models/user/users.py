@@ -37,7 +37,7 @@ class User(Model):
             user = cls.find_by_email(email) # if user is in DB throw and error 
             raise UserErrors.UserAlreadyRegisteredError("the email you registered already exists")
         except UserErrors.UserNotFoundError: # if user not in DB find_by_email throw UserNotFound Error and this except block will run 
-            User(email=email,password=password).save()
+            User(email=email,password=Utils.hash_password(password)).save()
         
         return True 
 
