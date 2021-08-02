@@ -24,7 +24,7 @@ class Store(Model):
 
     def json(self)->Dict:
         return {
-            "_id":self.id,
+            "_id":self._id,
             "name":self.name,
             "url_prefix":self.url_prefix,
             "tag_name":self.tag_name,

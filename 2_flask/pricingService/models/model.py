@@ -44,9 +44,9 @@ class Model(metaclass=ABCMeta):
     @classmethod 
     def find_one_by(cls:Type[T],attribute:str,value:Union[str,Dict])->T:
         object =Database.find_one(cls.collection,{attribute:value})
-        print("class:",cls)
-        print(f"query:{attribute}:{value}")
-        print("object:",object)
+        # print("class:",cls)
+        # print(f"query:{attribute}:{value}")
+        # print("object:",object)
         return cls(**object)
 
     @classmethod

@@ -13,6 +13,7 @@ class Alert(Model):
     # " we want collection  as class variable without includeing it in init"
     
     collection:str = field(init=False, default="alerts")
+    name:str
     item_id:str 
     price_limit:float 
     _id:str = field(default_factory=lambda:uuid.uuid4().hex) # default_factory is to pass any function, it means _id or uuid.uuid4().hex

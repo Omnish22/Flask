@@ -14,10 +14,11 @@ class Item(Model):
     url:str 
     tag_name:str
     query:Dict 
+    price:float=field(default=None) # to load price in database when loadprice called 
     _id:str = field(default_factory=lambda:uuid.uuid4().hex)
 
-    def __post_init__(self):
-        self.price = None 
+    # def __post_init__(self):
+    #     self.price = None 
 
 
     # def __init__(self, url:str, tag_name: str, query:Dict, name:str="Item", _id:str=None):
@@ -34,11 +35,12 @@ class Item(Model):
 
     def json(self)-> Dict:
         return {
-            "name":self.name,
+            # "name":self.name,
             "url":self.url,
             "tag_name":self.tag_name,
             "query":self.query,
-            "_id":self._id
+            "_id":self._id,
+            "price":self.price
         }
 
     def load_price(self) -> float:
