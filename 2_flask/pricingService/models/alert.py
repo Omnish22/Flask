@@ -3,6 +3,8 @@ from typing import Dict,List
 from models.items import Item
 from models.model import Model
 # from common.database import Database
+from models.user.users import User
+
 
 from dataclasses import dataclass, field # this is to convert Alert class to dataclass
 
@@ -16,6 +18,7 @@ class Alert(Model):
     name:str
     item_id:str 
     price_limit:float 
+    user_email:str 
     _id:str = field(default_factory=lambda:uuid.uuid4().hex) # default_factory is to pass any function, it means _id or uuid.uuid4().hex
     
     #" super init is taken care by dataclasses "
@@ -25,6 +28,7 @@ class Alert(Model):
     def __post_init__(self):
         # this dunder will run after init and so it has item_id  and can be accessed using self.item_id
         self.item = Item.get_by_id(self.item_id) 
+        self.user = User.find_by_email(self.user_email)
 
     # =========================================================================================================
 
@@ -41,7 +45,8 @@ class Alert(Model):
             "name":self.name,
             "item_id":self.item_id,
             "price_limit":self.price_limit,
-            "_id":self._id 
+            "_id":self._id,
+            "user_email":self.user_email
         }
 
     # def add(self):

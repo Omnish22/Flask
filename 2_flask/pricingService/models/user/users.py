@@ -27,6 +27,19 @@ class User(Model):
             raise UserErrors.UserNotFoundError("A user with this mail was not found")
 
     @classmethod
+    def is_login_valid(cls,email:str,password:str)->bool:
+        user = cls.find_by_email(email=email) # if it throw an error it will be caught in try except block in users.py's login_user try except block
+
+        if not Utils.check_hashed_password(password,user.password):
+            raise UserErrors.IncorrectPasswordError('Your Password is incorrect')
+        
+        return True 
+
+
+
+
+
+    @classmethod
     def register_user(cls,email:str,password:str)->bool:
         # this if block check weather email is for valid format or not 
         if not Utils.email_is_valid(email):
@@ -40,6 +53,7 @@ class User(Model):
             User(email=email,password=Utils.hash_password(password)).save()
         
         return True 
+
 
 
     def json(self)->Dict:

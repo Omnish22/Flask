@@ -1,18 +1,24 @@
-from flask import Blueprint, render_template, redirect,url_for,request
+from flask import Blueprint, render_template, redirect, session,url_for,request
 from models.store import Store 
 from models.alert import Alert 
 from models.items import Item 
+from models.user.decorators import requires_login
+
+
 
 alert_blueprint = Blueprint('alerts',__name__)
 
 
 @alert_blueprint.route("/")
+@requires_login
 def index():
-    alerts = Alert.getAll()
+    # alerts = Alert.getAll()
+    alerts = Alert.find_many_by('user_email',session['email'])
     return render_template("alerts/index.html",alerts=alerts)
 
 
 @alert_blueprint.route("/new",methods=['GET','POST'])
+@requires_login
 def new_alert():
     if request.method=="POST":
         alert_name = request.form['name']
@@ -27,13 +33,14 @@ def new_alert():
         item.load_price() # this will go to website and fetch price of the product and update in instance's price 
         item.save()
         
-        Alert(name=alert_name,item_id=item._id,price_limit=price_limit).save()
+        Alert(name=alert_name,item_id=item._id,price_limit=price_limit,user_email=session['email']).save()
 
 
     return render_template("alerts/new_alert.html")
 
 
 @alert_blueprint.route("/edit/<string:alert_id>",methods=['GET','POST'])
+@requires_login
 def edit_alert(alert_id):
     alert = Alert.get_by_id(alert_id)
 
@@ -47,6 +54,9 @@ def edit_alert(alert_id):
 
 
 @alert_blueprint.route("/route/<string:alert_id>")
+@requires_login
 def delete_alert(alert_id):
-    Alert.get_by_id(alert_id).remove()
+    alert = Alert.get_by_id(alert_id)
+    if alert.user_email==session['email']:
+        alert.remove()
     return redirect(url_for(".index"))
