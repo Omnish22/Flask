@@ -1,26 +1,39 @@
-# import smtplib
-# sender_email = "mdm17b020@iiitdm.ac.in"
-# recever_email = "omnish22@gmail.com"
-# sender_password = input("enter your password")
-# message = "this email is send useing python"
-
-# server = smtplib.SMTP('smtp.gmail.com',587)
-# server.starttls()
-# server.login(sender_email,sender_password)
-# print("login Success")
-# server.sendmail(sender_email,recever_email,message)
-# print("Email has been sent to ",recever_email)
-
-import requests
-
-def send_simple_message():
-	return requests.post(
-		"https://api.mailgun.net/v3/sandbox7b9234b5e962442baa465c21629eb7a2.mailgun.org/messages",
-		auth=("api", "3f3ecc1b20d55cae4f548f03684f6c05-64574a68-45febc5b"),
-		data={"from": "Pricing Services <mdm17b020@iiitdm.ac.in>",
-			"to": ["omnish22@gmail.com"],
-			"subject": "Hello",
-			"text": "Testing some Mailgun awesomness!"})
+from email import message
+from requests import Response, post 
+from typing import List 
+import os 
 
 
-print(send_simple_message())
+class MailgunException(Exception):
+	def __init__(self,message:str):
+		self.message= message
+
+
+
+class Mailgun:
+	MAILGUN_API_KEY= os.environ.get("MAILGUN_API_KEY",None)
+	MAILGUN_DOMAIN= os.environ.get("MAILGUN_DOMAIN",None)
+	FROM_TITLE= "Pricing Service"
+	FROM_EMAIL="mdm17b020@iiitdm.ac.in"
+
+
+	@classmethod 
+	def send_mail(cls,email:List[str],subject:str,text:str,html:str)->Response:
+		if cls.MAILGUN_API_KEY is None:
+			raise MailgunException("API key is missing")
+		if cls.MAILGUN_DOMAIN is None:
+			raise MailgunException("Domain is missing")
+
+		response = post(f"{cls.MAILGUN_DOMAIN}/messages",
+						auth=("api", cls.MAILGUN_API_KEY),
+						data={"from": f"{cls.FROM_TITLE} <{cls.FROM_EMAIL}>",
+							"to": email,
+							"subject": subject,
+							"text":text})
+		if response.status_code!=200:
+			print(response.json())
+			raise MailgunException("Error occured when sending e-mail")
+		return response
+
+
+Mailgun.send_mail(["omnish22@gmail.com"],"Price Alert","Your Item reached it's price","<h1>Perchase your Item</h1>")
