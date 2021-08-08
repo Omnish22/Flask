@@ -6,6 +6,8 @@ from models.model import Model
 from models.user.users import User
 from libs.mailgum import Mailgun
 
+# from dotenv import load_dotenv
+# load_dotenv()
 
 
 from dataclasses import dataclass, field # this is to convert Alert class to dataclass
@@ -59,8 +61,10 @@ class Alert(Model):
         return self.item.price 
 
     def notifyIfPriceReached(self):
+        print(f"price:{self.item.price}  limit:{self.price_limit}")
         if self.item.price < self.price_limit:
-            print(f"{self.item.name}'s price reached low value {self.item.price}")
+            print(f"{self.name}'s price reached low value {self.item.price}")
+            print("Sending...")
             Mailgun.send_mail(
                 [self.user_email],
                 f"notification for {self.name}",
@@ -68,5 +72,6 @@ class Alert(Model):
                 "<p>Your alert {self.name} has reached price under {self.price_limit}.</p><p>The Latest Price is {self.item.price}.</p><p>Click <a href='{self.item.url}'>here</a>to perchase your item</p>"
 
             )
+            print("sent!")
     
     

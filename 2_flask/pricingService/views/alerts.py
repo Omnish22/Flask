@@ -3,7 +3,8 @@ from models.store import Store
 from models.alert import Alert 
 from models.items import Item 
 from models.user.decorators import requires_login
-
+from dotenv import load_dotenv
+load_dotenv()
 
 
 alert_blueprint = Blueprint('alerts',__name__)

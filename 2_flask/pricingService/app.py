@@ -7,12 +7,20 @@ import os
 ''' Items are going to be created internally and not by users '''
 # from views.items import item_blueprint
 
+
 app = Flask(__name__)
 app.secret_key = os.urandom(64)
 app.config.update(ADMIN=os.environ.get('ADMIN')) # it will update environment variable
+# above ADMIN is key and is updated with ADMIN value from .env fil
+
+# print("API key:",os.environ.get("MAILGUN_API_KEY"))
 
 # app.register_blueprint(item_blueprint,url_prefix="/items") # /items/new
+@app.route("/")
+def home():
+    return render_template("home.html")
 
+    
 app.register_blueprint(alert_blueprint,url_prefix="/alerts")
 app.register_blueprint(store_blueprint,url_prefix="/stores")
 app.register_blueprint(user_blueprint,url_prefix="/users")
